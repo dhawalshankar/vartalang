@@ -113,7 +113,7 @@ export default function LearnPage() {
             </a>
             <Link href="/radio" className={ctaClass}>
               <Radio className="w-4 h-4" />
-              Play Gauraiyya Radio!
+              Listen to Gauraiyya Radio!
             </Link>
           </div>
         </div>
