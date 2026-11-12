@@ -1,6 +1,11 @@
 # VartaLang 🌉
 ## India's Language Bridge for Real Economic Opportunity
 
+VartaLang is a language-exchange, practical-learning, and vernacular-jobs
+platform designed around measurable economic outcomes rather than passive
+content consumption. This repository contains the production web application
+for `vartalang.in`.
+
 ---
 
 ## 🎯 **The Reality**
@@ -169,6 +174,24 @@ We help people:
 - No dating mechanics
 - Zero tolerance for harassment
 - GDPR compliant
+
+## 🏗️ Production architecture
+
+VartaLang is deployed as independently operated services rather than a single
+monolith:
+
+| Surface | Responsibility | Deployment |
+|---|---|---|
+| Main web application | Profiles, matching, chat, jobs, and community UX | Vercel |
+| Main API | Authentication, matching, jobs, notifications, and Socket.IO | Render |
+| LMS web application | Courses, practice, progress, and checkout UX | Vercel |
+| LMS API | Course, enrollment, payment, and progress domain | Render |
+| Challenge execution | Serverless challenge functionality | Vercel |
+
+The services communicate through authenticated HTTP APIs and domain boundaries.
+This keeps the main platform's MongoDB data model separate from the LMS
+PostgreSQL data model while allowing the products to participate in one
+VartaLang ecosystem.
 
 ---
 
