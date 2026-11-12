@@ -354,6 +354,23 @@ VartaLang is built for India, by people who understand India's reality.
 
 ---
 
+## 🚀 Production ecosystem
+
+The VartaLang web application is deployed on Vercel at
+`https://vartalang.in`. It is connected to the independently deployed
+Node.js/Express backend and Socket.IO service described in this repository's
+backend project. The VartaLang LMS is a separate Next.js application at
+`https://learn.vartalang.in`, backed by an independent FastAPI/PostgreSQL
+service.
+
+The platform ecosystem also includes serverless challenge functionality on
+Vercel and Google Cloud integrations used by the LMS for YouTube Data API v3
+playlist-based course importing. These services are separated by domain and
+deployment boundary while participating in the same VartaLang product
+ecosystem.
+
+---
+
 ## 🔧 **FOR DEVELOPERS: Technical Overview**
 
 ### ✅ **What's Already Built**
