@@ -54,6 +54,7 @@ export default function TargetRolesPage() {
       router.push("/auth/login");
       return;
     }
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Client-only auth check from localStorage
     setIsAuthenticating(false);
   }, [router]);
 

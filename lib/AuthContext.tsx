@@ -22,6 +22,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Client-only auth check from localStorage on mount
     checkAuth();
     setIsChecking(false);
 

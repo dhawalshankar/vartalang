@@ -53,20 +53,17 @@ export default function VartaLangJobsHome() {
   });
 
   useEffect(() => {
-    fetchStats();
+    fetch(`${API_URL}/jobs/stats`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.stats) {
+          setStats(data.stats);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching stats:", error);
+      });
   }, []);
-
-  const fetchStats = async () => {
-    try {
-      const res = await fetch(`${API_URL}/jobs/stats`);
-      if (res.ok) {
-        const data = await res.json();
-        setStats(data.stats);
-      }
-    } catch (error) {
-      console.error("Error fetching stats:", error);
-    }
-  };
 
   return (
     <div className={`min-h-screen transition-colors duration-500 ${darkMode ? 'bg-[#1a1410]' : 'bg-[#FFF9F5]'}`}>

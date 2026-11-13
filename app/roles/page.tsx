@@ -54,6 +54,7 @@ export default function UpcomingPage() {
   // Select random quote on mount
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * languageQuotes.length);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Client-only random quote on mount avoids SSR hydration mismatch
     setCurrentQuote(randomIndex);
   }, []);
 

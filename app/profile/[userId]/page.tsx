@@ -57,7 +57,6 @@ export default function DynamicProfilePage() {
   const { darkMode } = useDarkMode();
   
   const userId = params.userId as string;
-  const [isOwnProfile, setIsOwnProfile] = useState(false);
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   
@@ -70,7 +69,10 @@ export default function DynamicProfilePage() {
       return;
     }
 
-    setIsOwnProfile(userId === myUserId);
+    if (userId === myUserId) {
+      router.push("/profile");
+      return;
+    }
 
     fetch(`${API_URL}/auth/user/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -118,11 +120,6 @@ export default function DynamicProfilePage() {
         </div>
       </div>
     );
-  }
-
-  if (isOwnProfile) {
-    router.push('/profile');
-    return null;
   }
 
   return (
