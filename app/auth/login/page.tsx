@@ -1,6 +1,6 @@
 // app/auth/login/page.tsx (Updated)
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Mail, Lock, Sparkles, AlertCircle } from "lucide-react";
@@ -12,7 +12,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
 export default function SigninPage() {
   const { darkMode } = useDarkMode();
-  const { setIsLoggedIn } = useAuth();
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(""); // ← ADD THIS
@@ -20,6 +20,12 @@ export default function SigninPage() {
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.replace("/profile");
+    }
+  }, [isLoggedIn, router]);
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
@@ -114,6 +120,8 @@ export default function SigninPage() {
       setLoading(false);
     }
   };
+
+  if (isLoggedIn) return null;
 
   return (
     <div className={`min-h-screen flex items-center justify-center px-4 ${darkMode ? "bg-[#1a1410]" : "bg-[#FFF9F5]"}`}>

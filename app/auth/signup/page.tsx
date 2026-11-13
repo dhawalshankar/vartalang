@@ -23,11 +23,17 @@ interface GoogleCredentialResponse {
 
 export default function SignupPage() {
   const { darkMode } = useDarkMode();
-  const { setIsLoggedIn } = useAuth();
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [googleUser, setGoogleUser] = useState<GoogleUser | null>(null);
   const [showPasswordInfo, setShowPasswordInfo] = useState(false);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.replace("/profile");
+    }
+  }, [isLoggedIn, router]);
   
   const [formData, setFormData] = useState({
     name: "",
@@ -177,6 +183,8 @@ export default function SignupPage() {
       setLoading(false);
     }
   };
+
+  if (isLoggedIn) return null;
 
   return (
     <div className={`min-h-screen ${darkMode ? "bg-[#1a1410]" : "bg-[#FFF9F5]"}`}>
