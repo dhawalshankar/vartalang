@@ -9,12 +9,24 @@ import { useAuth } from '@/lib/AuthContext';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
+interface GoogleUser {
+  accessToken?: string;
+  credential?: string;
+  name?: string;
+  email?: string;
+  picture?: string;
+}
+
+interface GoogleCredentialResponse {
+  credential?: string;
+}
+
 export default function SignupPage() {
   const { darkMode } = useDarkMode();
   const { setIsLoggedIn } = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [googleUser, setGoogleUser] = useState<any>(null);
+  const [googleUser, setGoogleUser] = useState<GoogleUser | null>(null);
   const [showPasswordInfo, setShowPasswordInfo] = useState(false);
   
   const [formData, setFormData] = useState({
@@ -90,8 +102,9 @@ export default function SignupPage() {
     },
   });
 
-  const handleGoogleSuccess = async (credentialResponse: any) => {
+  const handleGoogleSuccess = async (credentialResponse: GoogleCredentialResponse) => {
     try {
+      if (!credentialResponse.credential) return;
       // Decode the JWT to get user info
       const decoded = JSON.parse(atob(credentialResponse.credential.split('.')[1]));
       

@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from 'react';
+import type Hls from 'hls.js';
 import { Fraunces, Tiro_Devanagari_Hindi } from 'next/font/google';
 import {
   Play, Pause, Radio, Languages, GraduationCap, ArrowRight, Loader2, Sun, Moon,
@@ -272,7 +273,7 @@ export default function GauraiyyaRadio() {
   const [error, setError] = useState('');
   const [liveName, setLiveName] = useState('');
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const hlsRef = useRef<any>(null);
+  const hlsRef = useRef<Hls | null>(null);
   const good = useRef<Record<string, { url: string; name: string }>>({}); // last working stream per station
   const token = useRef(0);
   const trying = useRef(false);
@@ -365,19 +366,25 @@ export default function GauraiyyaRadio() {
     // Skip stations explicitly tagged only with some other Indian language
     const others = ['hindi', 'bengali', 'bangla', 'tamil', 'telugu', 'kannada', 'malayalam', 'marathi', 'gujarati', 'punjabi'];
     const keys = s.lang === 'bengali' ? ['bengali', 'bangla'] : [s.lang];
-    const langOk = (x: any) => {
+    interface RadioBrowserStation {
+      language?: string;
+      url_resolved?: string;
+      url?: string;
+      name?: string;
+    }
+    const langOk = (x: RadioBrowserStation) => {
       const l = String(x.language || '').toLowerCase();
       if (!l || keys.some((k) => l.includes(k))) return true;
       return !others.some((o) => l.includes(o));
     };
-    const add = (list: any[]) => {
+    const add = (list: RadioBrowserStation[]) => {
       for (const x of list) {
         if (!langOk(x)) continue;
         for (const url of [x.url_resolved, x.url] as string[]) {
           if (!url || seen.has(url)) continue;
           if (window.location.protocol === 'https:' && !url.startsWith('https:')) continue;
           seen.add(url);
-          out.push({ url, name: x.name });
+          out.push({ url, name: x.name || '' });
         }
       }
     };
