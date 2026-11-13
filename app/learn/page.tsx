@@ -5,6 +5,7 @@ import { BookOpen, Search, MapPin, Languages as LanguagesIcon, Sparkles, Externa
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { useDarkMode } from '@/lib/DarkModeContext';
+import { goToLms } from '@/lib/lmsSso';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 const PREMIUM_URL = "https://learn.vartalang.in";
@@ -208,8 +209,10 @@ export default function LearnPage() {
             </p>
             <a
               href={PREMIUM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+              onClick={(event) => {
+                event.preventDefault();
+                void goToLms();
+              }}
               className="inline-flex items-center gap-2 px-8 py-3 rounded-full font-semibold bg-linear-to-r from-orange-500 to-red-600 text-white hover:shadow-xl hover:scale-105 transition-all"
             >
               Explore Premium Learning Platform <ExternalLink className="w-4 h-4" />
