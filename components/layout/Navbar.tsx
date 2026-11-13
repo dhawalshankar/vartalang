@@ -9,6 +9,7 @@ import { Menu, X, Sun, Moon, User, GraduationCap } from "lucide-react";
 import { useDarkMode } from "@/lib/DarkModeContext";
 import { useAuth } from "@/lib/AuthContext";
 import NotificationDropdown from "@/components/notifications/NotificationDropdown";
+import { goToLms } from "@/lib/lmsSso";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
@@ -155,6 +156,14 @@ export default function Navbar() {
                   </Link>
                 </>
               )}
+
+              <button
+                onClick={() => void goToLms()}
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-semibold bg-linear-to-r from-orange-500 to-red-600 text-white hover:scale-105 transition-all"
+              >
+                <GraduationCap className="w-4 h-4" />
+                LMS
+              </button>
 
               {/* Dark Mode Toggle */}
               <button
@@ -329,6 +338,17 @@ export default function Navbar() {
           </Link>
         </>
       )}
+
+      <button
+        onClick={() => {
+          setMobileMenuOpen(false);
+          void goToLms();
+        }}
+        className="px-4 py-2.5 rounded-lg text-sm font-semibold text-center flex items-center justify-center gap-2 bg-linear-to-r from-orange-500 to-red-600 text-white"
+      >
+        <GraduationCap className="w-4 h-4" />
+        Open Learning Platform
+      </button>
     </div>
   </div>
 )}
