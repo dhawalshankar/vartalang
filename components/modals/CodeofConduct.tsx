@@ -78,7 +78,7 @@ export default function CodeOfConductModal({ isOpen, onClose }: CodeOfConductMod
                 Inclusivity
               </h4>
               <p className={`text-sm ${darkMode ? "text-orange-200/80" : "text-gray-700"}`}>
-                We celebrate India's linguistic diversity. All languages, dialects, and accents are equally valued.
+                We celebrate India&apos;s linguistic diversity. All languages, dialects, and accents are equally valued.
               </p>
             </div>
             <div className={`p-4 rounded-xl border ${
@@ -126,7 +126,7 @@ export default function CodeOfConductModal({ isOpen, onClose }: CodeOfConductMod
             </li>
             <li className="flex items-start gap-2">
               <span className="text-green-500 mt-0.5">✓</span>
-              <span><strong>Respect privacy</strong> - don't share others' personal information</span>
+              <span><strong>Respect privacy</strong> - don&apos;t share others&apos; personal information</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-green-500 mt-0.5">✓</span>
@@ -177,7 +177,7 @@ export default function CodeOfConductModal({ isOpen, onClose }: CodeOfConductMod
             </li>
             <li className="flex items-start gap-2">
               <span className="text-red-500 mt-0.5">✗</span>
-              <span><strong>Doxxing</strong> or sharing others' private information without consent</span>
+              <span><strong>Doxxing</strong> or sharing others&apos; private information without consent</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-red-500 mt-0.5">✗</span>
@@ -197,7 +197,7 @@ export default function CodeOfConductModal({ isOpen, onClose }: CodeOfConductMod
           }`}>
             <ul className={`space-y-2 text-sm ${darkMode ? "text-orange-200/80" : "text-gray-700"}`}>
               <li>• <strong>Correct gently:</strong> Help others improve without being condescending</li>
-              <li>• <strong>Speak clearly:</strong> Adjust your pace for your partner's level</li>
+              <li>• <strong>Speak clearly:</strong> Adjust your pace for your partner&apos;s level</li>
               <li>• <strong>Be encouraging:</strong> Praise effort and progress, not just perfection</li>
               <li>• <strong>Share the conversation:</strong> Balance teaching and learning time</li>
               <li>• <strong>Stay focused:</strong> Keep conversations relevant to language learning</li>
@@ -237,7 +237,7 @@ export default function CodeOfConductModal({ isOpen, onClose }: CodeOfConductMod
             Building Together
           </h3>
           <p className={`text-sm mb-4 ${darkMode ? "text-orange-200/80" : "text-gray-700"}`}>
-            VartaLang is more than a platform - it's a community. Every member plays a role in creating a positive, inclusive space where Indians from all walks of life can connect through language.
+            VartaLang is more than a platform - it&apos;s a community. Every member plays a role in creating a positive, inclusive space where Indians from all walks of life can connect through language.
           </p>
           <p className={`text-sm mb-6 ${darkMode ? "text-orange-200/80" : "text-gray-700"}`}>
             By following this Code of Conduct, you help us build a community where:

@@ -95,7 +95,7 @@ export default function UpcomingPage() {
             <p className={`text-lg md:text-xl font-serif italic mb-6 leading-relaxed ${
               darkMode ? 'text-orange-50' : 'text-gray-900'
             }`}>
-              "{languageQuotes[currentQuote].quote}"
+              &quot;{languageQuotes[currentQuote].quote}&quot;
             </p>
             
             <p className={`text-base font-medium ${

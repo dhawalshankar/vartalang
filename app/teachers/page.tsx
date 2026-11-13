@@ -181,7 +181,7 @@ export default function JoinAsCreator() {
               </div>
               <div>
                 <h2 className={`text-2xl font-bold mb-3 ${heading}`}>
-                  You don't start from zero
+                  You don&apos;t start from zero
                 </h2>
                 <p className={`text-lg leading-relaxed ${body}`}>
                   VartaLang already has users who chat and translate across languages. When a

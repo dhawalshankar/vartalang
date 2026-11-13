@@ -299,7 +299,7 @@ export default function SignupPage() {
                     <p className={`text-xs leading-relaxed ${darkMode ? "text-blue-200" : "text-blue-800"}`}>
                       <span className="font-semibold">💡 About passwords:</span>
                       <br />
-                      Skip the password to sign in exclusively with Google. Add one if you'd like email login too.
+                      Skip the password to sign in exclusively with Google. Add one if you&apos;d like email login too.
                     </p>
                   </div>
                 )}
@@ -437,7 +437,7 @@ export default function SignupPage() {
               {/* Primary Role */}
               <div>
                 <label className={`block text-sm font-semibold mb-2.5 ${darkMode ? "text-orange-100" : "text-orange-900"}`}>
-                  What's your primary goal? *
+                  What&apos;s your primary goal? *
                 </label>
                 <div className="grid grid-cols-2 gap-3">
                   <button
@@ -459,7 +459,7 @@ export default function SignupPage() {
                         : darkMode ? "text-orange-400" : "text-orange-500"
                     }`} />
                     <p className={`font-bold mb-1 ${darkMode ? "text-orange-100" : "text-orange-900"}`}>Learn</p>
-                    <p className={`text-xs ${darkMode ? "text-orange-200/70" : "text-orange-700/70"}`}>I'm here to learn</p>
+                    <p className={`text-xs ${darkMode ? "text-orange-200/70" : "text-orange-700/70"}`}>I&apos;m here to learn</p>
                   </button>
                   <button
                     type="button"
@@ -480,7 +480,7 @@ export default function SignupPage() {
                         : darkMode ? "text-orange-400" : "text-orange-500"
                     }`} />
                     <p className={`font-bold mb-1 ${darkMode ? "text-orange-100" : "text-orange-900"}`}>Teach</p>
-                    <p className={`text-xs ${darkMode ? "text-orange-200/70" : "text-orange-700/70"}`}>I'm here to teach</p>
+                    <p className={`text-xs ${darkMode ? "text-orange-200/70" : "text-orange-700/70"}`}>I&apos;m here to teach</p>
                   </button>
                 </div>
               </div>

@@ -276,8 +276,8 @@ export default function AboutPage() {
               darkMode ? 'text-orange-200/80' : 'text-gray-600'
             }`}>
               <p>
-                We're a small team that grew out of Cosmo India Prakashan, a publishing house
-                that's been working with Indian languages for over forty years.
+                We&apos;re a small team that grew out of Cosmo India Prakashan, a publishing house
+                that&apos;s been working with Indian languages for over forty years.
               </p>
               <p>
                 We noticed something simple but important: people need safe spaces to actually
@@ -477,18 +477,18 @@ export default function AboutPage() {
                 darkMode ? 'text-orange-200/80' : 'text-gray-600'
               }`}>
                 <p>
-                  "I didn't build VartaLang as just an engineer. I built it as someone who's
+                  &quot;I didn&apos;t build VartaLang as just an engineer. I built it as someone who&apos;s
                   seen the cost of linguistic barriers—lost opportunities, missed connections,
-                  cultural isolation."
+                  cultural isolation.&quot;
                 </p>
 
                 <p>
-                  This platform exists because language is more than words. It's the ability
+                  This platform exists because language is more than words. It&apos;s the ability
                   to connect, to work, to belong.
                 </p>
 
                 <p>
-                  We're not trying to be the biggest. We're trying to be the most useful,
+                  We&apos;re not trying to be the biggest. We&apos;re trying to be the most useful,
                   the most respectful, the most human.
                 </p>
 
@@ -496,7 +496,7 @@ export default function AboutPage() {
                   <p className={`text-sm italic ${
                     darkMode ? 'text-orange-300' : 'text-orange-700'
                   }`}>
-                    "Every conversation on VartaLang is a small bridge between cultures."
+                    &quot;Every conversation on VartaLang is a small bridge between cultures.&quot;
                   </p>
                 </div>
               </div>

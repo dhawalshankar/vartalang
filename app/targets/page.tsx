@@ -949,7 +949,7 @@ export default function TargetRolesPage() {
               Why pursue language-based careers?
             </h2>
             <p className={`text-lg ${darkMode ? 'text-orange-200/70' : 'text-gray-600'}`}>
-              The advantages of being multilingual in today's job market
+              The advantages of being multilingual in today&apos;s job market
             </p>
           </div>
 

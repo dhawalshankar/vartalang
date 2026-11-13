@@ -161,7 +161,7 @@ export default function VoiceChallengeIntro() {
           </Link>
 
           <p className={`text-xs mt-3 ${darkMode ? 'text-orange-300/50' : 'text-gray-500'}`}>
-            Free · Takes about 5 minutes · You'll need to sign in first
+            Free · Takes about 5 minutes · You&apos;ll need to sign in first
           </p>
         </div>
       </section>
@@ -267,7 +267,7 @@ export default function VoiceChallengeIntro() {
               Why this industry, why now
             </h2>
             <p className={`text-sm max-w-xl mx-auto ${darkMode ? 'text-orange-200/70' : 'text-gray-600'}`}>
-              India's language and voice work is growing faster than the talent pipeline behind it
+              India&apos;s language and voice work is growing faster than the talent pipeline behind it
             </p>
           </div>
 
@@ -306,29 +306,29 @@ export default function VoiceChallengeIntro() {
               darkMode ? 'bg-orange-500/20 text-orange-300' : 'bg-orange-100 text-orange-700'
             }`}>
               <Heart className="w-4 h-4" aria-hidden="true" />
-              Why we're actually doing this
+              Why we&apos;re actually doing this
             </div>
 
             <h2 className={`text-2xl font-black mb-4 ${darkMode ? 'text-orange-50' : 'text-gray-900'}`}>
-              Not a revenue play — a discoverability problem we're trying to fix
+              Not a revenue play — a discoverability problem we&apos;re trying to fix
             </h2>
 
             <div className={`space-y-4 text-sm leading-relaxed ${darkMode ? 'text-orange-200/80' : 'text-gray-700'}`}>
               <p>
                 Good voice talent exists in every Indian town and city, in every language — but almost
                 none of it is visible to the companies that need it. Hiring for voice and language work
-                still runs through a small, repeat set of metro agencies. We think that's a discovery
+                still runs through a small, repeat set of metro agencies. We think that&apos;s a discovery
                 problem, not a talent problem.
               </p>
               <p>
-                This challenge doesn't make VartaLang money directly. We don't sell raw recordings, we
-                don't charge candidates anything, and we don't run a pay-to-listen model for companies
+                This challenge doesn&apos;t make VartaLang money directly. We don&apos;t sell raw recordings, we
+                don&apos;t charge candidates anything, and we don&apos;t run a pay-to-listen model for companies
                 either. The only fee anywhere in this flow is a small, flat, one-time verification charge
                 on the company side — purely to keep out fake accounts, not tied to how much they browse
                 or listen.
               </p>
               <p>
-                What we're actually building is a clean, consent-based way for Indian voice talent to be
+                What we&apos;re actually building is a clean, consent-based way for Indian voice talent to be
                 heard by people who are genuinely hiring — and, over time, a properly-consented picture of
                 how Indian languages are actually spoken, which barely exists today.
               </p>
@@ -374,11 +374,11 @@ export default function VoiceChallengeIntro() {
             <div className={`space-y-4 text-sm leading-relaxed ${darkMode ? 'text-orange-200/80' : 'text-gray-700'}`}>
               <p>
                 By default, your recording is only used to connect you with companies hiring for voice
-                and language work. If you'd like extra care taken with your voice, you can ask us directly.
+                and language work. If you&apos;d like extra care taken with your voice, you can ask us directly.
               </p>
               <p>
-                We're still researching voice protection and misuse checks, so for now this is a
-                request-based process, not an automatic service. We can't promise to find every place a
+                We&apos;re still researching voice protection and misuse checks, so for now this is a
+                request-based process, not an automatic service. We can&apos;t promise to find every place a
                 voice is used, or to prove that a voice was cloned by AI — but we will look into what you
                 report and tell you honestly what we find.
               </p>
@@ -386,7 +386,7 @@ export default function VoiceChallengeIntro() {
 
             <div className={`mt-8 pt-6 border-t ${darkMode ? 'border-orange-800/30' : 'border-orange-100'}`}>
               <h3 className={`text-lg font-bold mb-2 ${darkMode ? 'text-orange-50' : 'text-gray-900'}`}>
-                The framework we're working toward
+                The framework we&apos;re working toward
               </h3>
               <p className={`text-sm leading-relaxed mb-4 ${darkMode ? 'text-orange-200/80' : 'text-gray-700'}`}>
                 Just as an author works with a publisher to control how their work is published and
@@ -412,7 +412,7 @@ export default function VoiceChallengeIntro() {
               </ul>
 
               <p className={`text-sm leading-relaxed mt-4 ${darkMode ? 'text-orange-200/80' : 'text-gray-700'}`}>
-                If you don't want AI to use your voice, that's completely okay. You can remain a human
+                If you don&apos;t want AI to use your voice, that&apos;s completely okay. You can remain a human
                 voice artist and be hired for dubbing, narration, cinema, OTT, advertising and other
                 work. If you choose to take part in AI, you should do it on your terms.
               </p>

@@ -473,7 +473,7 @@ export default function CreatorsPage() {
                 Paid Course (Optional)
               </h4>
               <p className={`text-sm ${darkMode ? 'text-orange-200/70' : 'text-gray-600'}`}>
-                You can make this course paid later when you're ready
+                You can make this course paid later when you&apos;re ready
               </p>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
@@ -1479,7 +1479,7 @@ export default function CreatorsPage() {
                       {request.text && (
                         <div className={`p-3 rounded-lg mb-3 ${darkMode ? 'bg-orange-900/20' : 'bg-orange-50'}`}>
                           <p className={`text-sm italic ${darkMode ? 'text-orange-200/80' : 'text-gray-700'}`}>
-                            "{request.text}"
+                            &quot;{request.text}&quot;
                           </p>
                         </div>
                       )}

@@ -177,7 +177,7 @@ export default function VartaLangJobsHome() {
           <p className={`text-center text-lg mb-12 ${
             darkMode ? 'text-orange-200/70' : 'text-gray-600'
           }`}>
-            Understand what VartaLang is and what it isn't
+            Understand what VartaLang is and what it isn&apos;t
           </p>
 
           <div className="grid md:grid-cols-2 gap-6">
@@ -366,9 +366,9 @@ export default function VartaLangJobsHome() {
                 </h4>
                 <ul className={`space-y-2 text-sm ${darkMode ? 'text-orange-200/70' : 'text-gray-600'}`}>
                   <li>• Jobs where language is incidental</li>
-                  <li>• "Preferred but not required" roles</li>
+                  <li>• &quot;Preferred but not required&quot; roles</li>
                   <li>• Generic admin/sales positions</li>
-                  <li>• Tech jobs with "nice to have" language</li>
+                  <li>• Tech jobs with &quot;nice to have&quot; language</li>
                   <li>• Customer service (unless language-specific)</li>
                 </ul>
               </div>

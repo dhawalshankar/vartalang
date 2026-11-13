@@ -319,7 +319,7 @@ export default function RoleDetailPage() {
                     <Languages className={`w-5 h-5 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`} />
                   </div>
                   <h2 className={`text-2xl font-bold ${darkMode ? 'text-orange-50' : 'text-gray-900'}`}>
-                    Languages You'll Work With
+                    Languages You&apos;ll Work With
                   </h2>
                 </div>
                 <div className="flex flex-wrap gap-3">

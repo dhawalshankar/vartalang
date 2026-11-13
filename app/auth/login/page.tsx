@@ -272,7 +272,7 @@ export default function SigninPage() {
           </form>
 
           <p className={`text-center text-sm mt-6 ${darkMode ? "text-orange-200/70" : "text-orange-700/70"}`}>
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link href="/auth/signup" className={`font-semibold ${darkMode ? "text-orange-400 hover:text-orange-300" : "text-orange-600 hover:text-orange-700"} transition-colors`}>
               Sign Up
             </Link>
