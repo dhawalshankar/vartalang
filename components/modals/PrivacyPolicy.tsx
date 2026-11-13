@@ -46,7 +46,7 @@ export default function PrivacyModal({ isOpen, onClose }: PrivacyModalProps) {
           </p>
 
           <p className={`text-sm mb-6 ${darkMode ? "text-orange-200/80" : "text-gray-700"}`}>
-            VartaLang ("we," "us," or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our language learning platform.
+            VartaLang (&quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our language learning platform.
           </p>
 
           <h3 className={`text-lg font-semibold mt-6 mb-3 ${darkMode ? "text-orange-100" : "text-orange-900"}`}>
@@ -143,7 +143,7 @@ export default function PrivacyModal({ isOpen, onClose }: PrivacyModalProps) {
           </p>
 
           <h3 className={`text-lg font-semibold mt-6 mb-3 ${darkMode ? "text-orange-100" : "text-orange-900"}`}>
-            7. Children's Privacy
+            7. Children&apos;s Privacy
           </h3>
           <p className={`text-sm mb-4 ${darkMode ? "text-orange-200/80" : "text-gray-700"}`}>
             VartaLang is not intended for children under 13. We do not knowingly collect personal information from children under 13. If you believe we have collected such information, please contact us immediately.

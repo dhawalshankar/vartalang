@@ -461,7 +461,7 @@ export default function VartaLangLanding() {
               The Opportunity Gap
             </h2>
             <p className={`text-sm ${darkMode ? 'text-orange-200/70' : 'text-gray-600'}`}>
-              Language shouldn't limit career access
+              Language shouldn&apos;t limit career access
             </p>
           </div>
 
@@ -475,7 +475,7 @@ export default function VartaLangLanding() {
                 74%
               </div>
               <p className={`text-sm ${darkMode ? 'text-orange-200/70' : 'text-gray-600'}`}>
-                of Indians don't speak English, yet most jobs require it—leaving millions behind despite having valuable regional language skills.
+                of Indians don&apos;t speak English, yet most jobs require it—leaving millions behind despite having valuable regional language skills.
               </p>
             </div>
 
@@ -488,7 +488,7 @@ export default function VartaLangLanding() {
                 3x Growth
               </div>
               <p className={`text-sm ${darkMode ? 'text-orange-200/70' : 'text-gray-600'}`}>
-                in regional language job postings since 2023. Companies finally need Hindi, Tamil, Telugu speakers—but can't find trained professionals.
+                in regional language job postings since 2023. Companies finally need Hindi, Tamil, Telugu speakers—but can&apos;t find trained professionals.
               </p>
             </div>
           </div>
@@ -1151,7 +1151,7 @@ export default function VartaLangLanding() {
               </h2>
 
               <p className={`text-base mb-5 ${darkMode ? 'text-orange-200/80' : 'text-gray-700'}`}>
-                Browse jobs where your regional languages are the requirement, not a limitation. Your mother tongue has value here, unlocking new economic opportunities across India's diverse markets.
+                Browse jobs where your regional languages are the requirement, not a limitation. Your mother tongue has value here, unlocking new economic opportunities across India&apos;s diverse markets.
               </p>
 
               <div className="grid sm:grid-cols-2 gap-3 mb-6">

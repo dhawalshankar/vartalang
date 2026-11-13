@@ -351,9 +351,9 @@ export default function ChallengeStartPage() {
                   <h1 className={`text-2xl font-black ${headingCls}`}>Read this out in {language}</h1>
                 </div>
                 <p className={`text-sm mb-5 ${bodyCls}`}>
-                  Find a quiet room, switch the fan off, and hold your phone a hand's width from your
+                  Find a quiet room, switch the fan off, and hold your phone a hand&apos;s width from your
                   mouth. Recording runs for one minute and stops on its own — read at a natural pace,
-                  and don't worry if you don't reach the end.
+                  and don&apos;t worry if you don&apos;t reach the end.
                 </p>
 
                 <div
@@ -431,8 +431,8 @@ export default function ChallengeStartPage() {
                 <h1 className={`text-2xl font-black ${headingCls}`}>Listen before you send it</h1>
               </div>
               <p className={`text-sm mb-5 ${bodyCls}`}>
-                Play it back once. If there's background noise or you stumbled badly, record again —
-                there's no penalty for retaking, and a clean take scores better.
+                Play it back once. If there&apos;s background noise or you stumbled badly, record again —
+                there&apos;s no penalty for retaking, and a clean take scores better.
               </p>
 
               <audio controls src={audioUrl} className="w-full mb-6" />

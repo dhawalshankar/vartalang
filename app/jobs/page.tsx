@@ -53,20 +53,17 @@ export default function VartaLangJobsHome() {
   });
 
   useEffect(() => {
-    fetchStats();
+    fetch(`${API_URL}/jobs/stats`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.stats) {
+          setStats(data.stats);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching stats:", error);
+      });
   }, []);
-
-  const fetchStats = async () => {
-    try {
-      const res = await fetch(`${API_URL}/jobs/stats`);
-      if (res.ok) {
-        const data = await res.json();
-        setStats(data.stats);
-      }
-    } catch (error) {
-      console.error("Error fetching stats:", error);
-    }
-  };
 
   return (
     <div className={`min-h-screen transition-colors duration-500 ${darkMode ? 'bg-[#1a1410]' : 'bg-[#FFF9F5]'}`}>
@@ -177,7 +174,7 @@ export default function VartaLangJobsHome() {
           <p className={`text-center text-lg mb-12 ${
             darkMode ? 'text-orange-200/70' : 'text-gray-600'
           }`}>
-            Understand what VartaLang is and what it isn't
+            Understand what VartaLang is and what it isn&apos;t
           </p>
 
           <div className="grid md:grid-cols-2 gap-6">
@@ -366,9 +363,9 @@ export default function VartaLangJobsHome() {
                 </h4>
                 <ul className={`space-y-2 text-sm ${darkMode ? 'text-orange-200/70' : 'text-gray-600'}`}>
                   <li>• Jobs where language is incidental</li>
-                  <li>• "Preferred but not required" roles</li>
+                  <li>• &quot;Preferred but not required&quot; roles</li>
                   <li>• Generic admin/sales positions</li>
-                  <li>• Tech jobs with "nice to have" language</li>
+                  <li>• Tech jobs with &quot;nice to have&quot; language</li>
                   <li>• Customer service (unless language-specific)</li>
                 </ul>
               </div>

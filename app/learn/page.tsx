@@ -134,7 +134,7 @@ export default function LearnPage() {
 
           {!loading && !error && filtered.length === 0 && (
             <p className={`text-center py-20 ${darkMode ? 'text-orange-200/70' : 'text-gray-600'}`}>
-              No languages match "{query}" yet.
+              No languages match &quot;{query}&quot; yet.
             </p>
           )}
 
@@ -201,7 +201,7 @@ export default function LearnPage() {
               <Sparkles className={`w-7 h-7 ${darkMode ? 'text-orange-400' : 'text-orange-600'}`} />
             </div>
             <h2 className={`text-2xl md:text-3xl font-bold mb-2 ${darkMode ? 'text-orange-50' : 'text-gray-900'}`}>
-              Didn't find your desired language or premium content?
+              Didn&apos;t find your desired language or premium content?
             </h2>
             <p className={`mb-6 max-w-xl mx-auto ${darkMode ? 'text-orange-200/70' : 'text-gray-600'}`}>
               Explore our Premium Learning Platform for structured courses and additional languages.

@@ -127,7 +127,7 @@ export default function TermsModal({ isOpen, onClose }: TermsModalProps) {
             10. Limitation of Liability
           </h3>
           <p className={`text-sm mb-4 ${darkMode ? "text-orange-200/80" : "text-gray-700"}`}>
-            VartaLang is provided "as is" without warranties of any kind. We are not liable for any indirect, incidental, or consequential damages arising from your use of our services.
+            VartaLang is provided &quot;as is&quot; without warranties of any kind. We are not liable for any indirect, incidental, or consequential damages arising from your use of our services.
           </p>
           <p className={`text-sm mb-4 ${darkMode ? "text-orange-200/80" : "text-gray-700"}`}>
           VartaLang does not participate in or manage any stage of the hiring process. We function solely as a job discovery platform, enabling users to connect directly with recruiters. We do not offer any assurance of interview selection or employment outcomes.

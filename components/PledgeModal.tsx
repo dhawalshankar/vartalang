@@ -255,7 +255,7 @@ export default function PledgeModal({ isOpen, onAccept, onClose }: PledgeModalPr
             <h4 className={`font-bold mb-3 text-center text-base ${
               darkMode ? "text-orange-200" : "text-orange-900"
             }`}>
-              By clicking "I Accept", I pledge to:
+              By clicking &quot;I Accept&quot;, I pledge to:
             </h4>
             <div className="space-y-2">
               {[

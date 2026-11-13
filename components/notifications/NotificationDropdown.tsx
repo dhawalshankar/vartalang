@@ -18,12 +18,12 @@ interface Notification {
     _id?: string;
     name: string;
     profilePhoto?: string;  // ✅ Added profile photo
-    languagesKnow?: any[];
+    languagesKnow?: unknown[];
     primaryLanguageToLearn?: string;
   };
   message?: string;
-  chatId?: any;
-  matchId?: any;
+  chatId?: unknown;
+  matchId?: unknown;
   read: boolean;
   createdAt: string;
 }
@@ -49,11 +49,12 @@ export default function NotificationDropdown({
   const router = useRouter();
   const { darkMode } = useDarkMode();
 
-  const extractId = (value: any): string | undefined => {
+  const extractId = (value: unknown): string | undefined => {
     if (!value) return undefined;
     if (typeof value === 'string') return value;
-    if (typeof value === 'object' && value._id) {
-      return typeof value._id === 'string' ? value._id : value._id.toString();
+    if (typeof value === 'object' && value !== null && '_id' in value) {
+      const id = (value as { _id: unknown })._id;
+      return typeof id === 'string' ? id : String(id);
     }
     return undefined;
   };
@@ -130,7 +131,7 @@ export default function NotificationDropdown({
     }
   };
 
-  const handleNotificationClick = async (notificationId: string, chatId?: any, matchId?: any) => {
+  const handleNotificationClick = async (notificationId: string, chatId?: unknown, matchId?: unknown) => {
     const token = localStorage.getItem("token");
     if (!token) return;
     
@@ -159,7 +160,7 @@ export default function NotificationDropdown({
     }
   };
 
-  const handleMatchAction = async (e: React.MouseEvent, notificationId: string, matchId: any, action: 'accept' | 'reject') => {
+  const handleMatchAction = async (e: React.MouseEvent, notificationId: string, matchId: unknown, action: 'accept' | 'reject') => {
     console.log("🎯 BUTTON CLICKED!", action);
     e.preventDefault();
     e.stopPropagation();

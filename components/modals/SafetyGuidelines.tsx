@@ -128,7 +128,7 @@ export default function SafetyGuidelinesModal({ isOpen, onClose }: SafetyGuideli
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-red-500 mt-0.5">⚠</span>
-                <span>Offers "too good to be true" opportunities</span>
+                <span>Offers &quot;too good to be true&quot; opportunities</span>
               </li>
             </ul>
           </div>
@@ -144,13 +144,13 @@ export default function SafetyGuidelinesModal({ isOpen, onClose }: SafetyGuideli
             </p>
             <ul className={`list-disc list-inside space-y-1 text-sm ${darkMode ? "text-yellow-200/80" : "text-yellow-800"}`}>
               <li>Meet in a public place (café, library, park)</li>
-              <li>Tell a friend or family member where you're going</li>
+              <li>Tell a friend or family member where you&apos;re going</li>
               <li>Share your live location with someone you trust</li>
               <li>Bring a friend, especially for the first meeting</li>
               <li>Meet during daylight hours</li>
               <li>Keep your phone charged and accessible</li>
               <li>Trust your instincts - if something feels off, leave</li>
-              <li>Avoid isolated locations or someone's home</li>
+              <li>Avoid isolated locations or someone&apos;s home</li>
             </ul>
           </div>
 
@@ -166,7 +166,7 @@ export default function SafetyGuidelinesModal({ isOpen, onClose }: SafetyGuideli
                 Romance Scams
               </h4>
               <p className={`text-xs ${darkMode ? "text-orange-200/70" : "text-gray-600"}`}>
-                Someone builds an emotional connection then asks for money for "emergencies"
+                Someone builds an emotional connection then asks for money for &quot;emergencies&quot;
               </p>
             </div>
             <div className={`p-3 rounded-lg border ${
@@ -196,7 +196,7 @@ export default function SafetyGuidelinesModal({ isOpen, onClose }: SafetyGuideli
                 Investment Schemes
               </h4>
               <p className={`text-xs ${darkMode ? "text-orange-200/70" : "text-gray-600"}`}>
-                "Guaranteed returns" on cryptocurrency, trading, or MLM schemes
+                &quot;Guaranteed returns&quot; on cryptocurrency, trading, or MLM schemes
               </p>
             </div>
           </div>
@@ -219,7 +219,7 @@ export default function SafetyGuidelinesModal({ isOpen, onClose }: SafetyGuideli
               <li><strong>Contact authorities</strong> - for serious threats or illegal activity:
                 <ul className="list-disc list-inside ml-4 mt-1 space-y-1">
                   <li>Cyber Crime Helpline: 1930</li>
-                  <li>Women's Helpline: 1091</li>
+                  <li>Women&apos;s Helpline: 1091</li>
                   <li>National Emergency: 112</li>
                   <li>Report online: cybercrime.gov.in</li>
                 </ul>
@@ -281,7 +281,7 @@ export default function SafetyGuidelinesModal({ isOpen, onClose }: SafetyGuideli
               Remember: Trust your instincts
             </p>
             <p className={`text-sm text-center ${darkMode ? "text-green-200/80" : "text-green-800"}`}>
-              If something feels wrong, it probably is. Your safety matters more than being polite. Don't hesitate to block, report, or walk away from any situation that makes you uncomfortable.
+              If something feels wrong, it probably is. Your safety matters more than being polite. Don&apos;t hesitate to block, report, or walk away from any situation that makes you uncomfortable.
             </p>
           </div>
 

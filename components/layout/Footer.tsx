@@ -80,7 +80,7 @@ export default function Footer() {
               <p className={`text-sm leading-relaxed max-w-sm ${
                 darkMode ? "text-orange-200/70" : "text-gray-600"
               }`}>
-                India's inclusive language learning ecosystem. Connecting learners with creators, tradition with opportunity—for every Indian.
+                India&apos;s inclusive language learning ecosystem. Connecting learners with creators, tradition with opportunity—for every Indian.
               </p>
 
               {/* An Initiative of Cosmo India Prakashan badge */}

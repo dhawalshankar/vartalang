@@ -54,6 +54,7 @@ export default function UpcomingPage() {
   // Select random quote on mount
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * languageQuotes.length);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Client-only random quote on mount avoids SSR hydration mismatch
     setCurrentQuote(randomIndex);
   }, []);
 
@@ -95,7 +96,7 @@ export default function UpcomingPage() {
             <p className={`text-lg md:text-xl font-serif italic mb-6 leading-relaxed ${
               darkMode ? 'text-orange-50' : 'text-gray-900'
             }`}>
-              "{languageQuotes[currentQuote].quote}"
+              &quot;{languageQuotes[currentQuote].quote}&quot;
             </p>
             
             <p className={`text-base font-medium ${

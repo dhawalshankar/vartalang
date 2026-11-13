@@ -111,11 +111,13 @@ interface TeacherStats {
   completedSessions: number;
 }
 
+type TabType = 'overview' | 'feedback' | 'mentorship' | 'courses' | 'notes' | 'live-classes' | 'analytics';
+
 export default function CreatorsPage() {
   const { darkMode } = useDarkMode();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'overview' | 'feedback' | 'mentorship' | 'courses' | 'notes' | 'live-classes' | 'analytics'>('overview');
+  const [activeTab, setActiveTab] = useState<TabType>('overview');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [createType, setCreateType] = useState<'course' | 'note' | 'session' | 'live-class'>('course');
   
@@ -473,7 +475,7 @@ export default function CreatorsPage() {
                 Paid Course (Optional)
               </h4>
               <p className={`text-sm ${darkMode ? 'text-orange-200/70' : 'text-gray-600'}`}>
-                You can make this course paid later when you're ready
+                You can make this course paid later when you&apos;re ready
               </p>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
@@ -1241,7 +1243,7 @@ export default function CreatorsPage() {
             ].map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
+                onClick={() => setActiveTab(tab.id as TabType)}
                 className={`px-6 py-3 rounded-xl font-medium text-sm whitespace-nowrap transition-all flex items-center gap-2 relative ${
                   activeTab === tab.id
                     ? 'bg-linear-to-r from-orange-500 to-red-600 text-white'
@@ -1479,7 +1481,7 @@ export default function CreatorsPage() {
                       {request.text && (
                         <div className={`p-3 rounded-lg mb-3 ${darkMode ? 'bg-orange-900/20' : 'bg-orange-50'}`}>
                           <p className={`text-sm italic ${darkMode ? 'text-orange-200/80' : 'text-gray-700'}`}>
-                            "{request.text}"
+                            &quot;{request.text}&quot;
                           </p>
                         </div>
                       )}

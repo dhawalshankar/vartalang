@@ -28,13 +28,30 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { useDarkMode } from '@/lib/DarkModeContext';
 
+interface RoleData {
+  icon?: React.ComponentType<{ className?: string }>;
+  title: string;
+  nativeTitle?: string;
+  category: string;
+  demand?: string;
+  description?: string;
+  salary?: string;
+  level?: string;
+  skills?: string[];
+  languages?: string[];
+  careerPath?: string;
+  dayInLife?: string;
+  companies?: string[];
+  quickFacts?: string[];
+}
+
 export default function RoleDetailPage() {
   const { darkMode } = useDarkMode();
   const params = useParams();
   const router = useRouter();
   const slug = params?.slug as string;
 
-  const [roleData, setRoleData] = useState<any>(null);
+  const [roleData, setRoleData] = useState<RoleData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isAuthenticating, setIsAuthenticating] = useState(true);
@@ -319,7 +336,7 @@ export default function RoleDetailPage() {
                     <Languages className={`w-5 h-5 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`} />
                   </div>
                   <h2 className={`text-2xl font-bold ${darkMode ? 'text-orange-50' : 'text-gray-900'}`}>
-                    Languages You'll Work With
+                    Languages You&apos;ll Work With
                   </h2>
                 </div>
                 <div className="flex flex-wrap gap-3">

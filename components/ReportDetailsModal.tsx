@@ -15,7 +15,7 @@ interface Report {
     name: string;
     email: string;
   };
-  chatId: string | { _id: string; [key: string]: any };
+  chatId: string | { _id: string; [key: string]: unknown };
   reason: string;
   timestamp: string;
 }

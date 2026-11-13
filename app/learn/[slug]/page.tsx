@@ -307,7 +307,7 @@ export default function LanguageGuidePage() {
               <h3 className={`text-sm font-semibold uppercase tracking-wide mb-3 ${
                 darkMode ? 'text-orange-400' : 'text-orange-600'
               }`}>
-                Editor's Picks
+                Editor&apos;s Picks
               </h3>
               <div className="grid sm:grid-cols-2 gap-4">
                 {featured.map((r) => (

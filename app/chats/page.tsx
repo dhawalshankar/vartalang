@@ -99,6 +99,22 @@ interface ChatDetail {
   isBlocked: boolean;
 }
 
+interface ReceiveMessagePayload {
+  chatId: string;
+  message: Message;
+}
+
+interface MessagesReadPayload {
+  chatId: string;
+}
+
+interface MessageTranslatedPayload {
+  chatId: string;
+  messageId: string;
+  translatedText?: string | null;
+  translatedLang?: string | null;
+}
+
 function ChatsContent() {
   const { darkMode } = useDarkMode();
   const socketRef = useRef<Socket | null>(null);
@@ -237,7 +253,7 @@ function ChatsContent() {
     }
   }, [deleteNotificationsForChat]);
 
-  const handleReceiveMessage = useCallback((data: any) => {
+  const handleReceiveMessage = useCallback((data: ReceiveMessagePayload) => {
     console.log("📨 Received message:", data);
     const { chatId, message } = data;
 
@@ -289,7 +305,7 @@ function ChatsContent() {
     }
   }, [currentUserId, selectedChat, fetchChats]);
 
-  const handleMessagesRead = useCallback((data: any) => {
+  const handleMessagesRead = useCallback((data: MessagesReadPayload) => {
     console.log("👁️ Messages marked as read:", data);
     const { chatId } = data;
 
@@ -307,7 +323,7 @@ function ChatsContent() {
 
   // backend's background/backfill translation lands here and patches
   // the matching message in-place if the chat is currently open.
-  const handleMessageTranslated = useCallback((data: any) => {
+  const handleMessageTranslated = useCallback((data: MessageTranslatedPayload) => {
     console.log("🌐 Message translated:", data);
     const { chatId, messageId, translatedText, translatedLang } = data;
 
@@ -1261,7 +1277,7 @@ function ChatsContent() {
               Report User
             </h3>
             <p className={`text-sm mb-4 ${darkMode ? "text-orange-200/70" : "text-orange-700/70"}`}>
-              Please describe why you're reporting this user. This will be sent to support@cosmoindiaprakashan.in and the user will be automatically blocked.
+              Please describe why you&apos;re reporting this user. This will be sent to support@cosmoindiaprakashan.in and the user will be automatically blocked.
             </p>
             <textarea
               value={reportReason}
