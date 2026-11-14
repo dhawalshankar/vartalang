@@ -9,6 +9,7 @@ import TermsModal from "@/components/modals/TermsofService";
 import PrivacyModal from "@/components/modals/PrivacyPolicy";
 import CodeOfConductModal from "@/components/modals/CodeofConduct";
 import SafetyGuidelinesModal from "@/components/modals/SafetyGuidelines";
+import { goToLms } from "@/lib/lmsSso";
 
 export default function Footer() {
   const { darkMode } = useDarkMode();
@@ -24,6 +25,7 @@ export default function Footer() {
     {
       title: "Product",
       links: [
+        { name: "Learning Platform", onClick: () => void goToLms() },
         { name: "For Teachers", href: "/teachers" },
         { name: "Jobs Board", href: "/jobs" },
       ]
