@@ -2,51 +2,20 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Image from "next/image";
 import { Menu, X, Sun, Moon, User, GraduationCap } from "lucide-react";
 import { useDarkMode } from "@/lib/DarkModeContext";
 import { useAuth } from "@/lib/AuthContext";
 import NotificationDropdown from "@/components/notifications/NotificationDropdown";
 import { goToLms } from "@/lib/lmsSso";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
-
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [userRole, setUserRole] = useState<'learner' | 'teacher' | null>(null);
   
-  const pathname = usePathname();
   const { darkMode, setDarkMode } = useDarkMode();
   const { isLoggedIn } = useAuth();
-
-  // ✅ Fetch user profile to get role
-  useEffect(() => {
-    if (isLoggedIn) {
-      fetchUserProfile();
-    } else {
-      setUserRole(null);
-    }
-  }, [isLoggedIn]);
-
-  const fetchUserProfile = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-
-    try {
-      const res = await fetch(`${API_URL}/auth/me`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      
-      if (!res.ok) throw new Error("Failed to fetch profile");
-      
-      const data = await res.json();
-      setUserRole(data.user.primaryRole);
-    } catch (error) {
-      console.error("Fetch profile error:", error);
-    }
-  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 py-4 transition-opacity">
@@ -61,9 +30,11 @@ export default function Navbar() {
           <div className="flex justify-between items-center px-5 h-14">
             {/* LOGO */}
             <Link href="/" className="flex items-center gap-2.5">
-              <img
+              <Image
                 src="/logo.png"
                 alt="Vartalang Logo"
+                width={531}
+                height={330}
                 className="w-17 h-auto"
               />
               <span
@@ -100,21 +71,6 @@ export default function Navbar() {
                       {item.name}
                     </Link>
                   ))}
-
-                  {/* ✅ Conditionally show Teachers link - Only for teachers */}
-                  {userRole === 'teacher' && (
-                    <Link
-                      href="/teachers"
-                      className={`text-sm font-semibold transition-colors flex items-center gap-1.5 ${
-                        darkMode
-                          ? "text-orange-200 hover:text-orange-100"
-                          : "text-gray-700 hover:text-gray-900"
-                      }`}
-                    >
-                      <GraduationCap className="w-4 h-4" />
-                      Teachers
-                    </Link>
-                  )}
 
                   {/* ✅ Notification Dropdown Component */}
                   <NotificationDropdown showBellIcon={true} />
@@ -291,19 +247,6 @@ export default function Navbar() {
           >
             About
           </Link>
-
-          {userRole === 'teacher' && (
-            <Link
-              href="/teachers"
-              onClick={() => setMobileMenuOpen(false)}
-              className={`px-4 py-2.5 rounded-lg text-sm font-semibold text-center transition-all flex items-center justify-center gap-2 ${
-                darkMode ? "text-orange-200 hover:bg-orange-900/40" : "text-gray-700 hover:bg-orange-50"
-              }`}
-            >
-              <GraduationCap className="w-4 h-4" />
-              Teachers
-            </Link>
-          )}
 
           <div className="h-px bg-linear-to-r from-transparent via-orange-500/30 to-transparent my-2"></div>
 
