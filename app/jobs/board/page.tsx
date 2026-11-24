@@ -132,8 +132,7 @@ export default function VartaLangJobsBoard() {
   const [publicJobs, setPublicJobs] = useState<PublicJobListing[]>([]);
   const [publicCareers, setPublicCareers] = useState<CareerPath[]>([]);
   const [publicLoading, setPublicLoading] = useState(false);
-  const [publicLanguage, setPublicLanguage] = useState('Hindi');
-  const [publicLocation, setPublicLocation] = useState('Delhi, India');
+  const [publicLanguage, setPublicLanguage] = useState('all');
   const [selectedCareerRole, setSelectedCareerRole] = useState('all');
   const [selectedIndustryCategory, setSelectedIndustryCategory] = useState('all');
   const [publicNotice, setPublicNotice] = useState('');
@@ -250,8 +249,7 @@ export default function VartaLangJobsBoard() {
     setPublicLoading(true);
     try {
       const params = new URLSearchParams();
-      if (publicLanguage && publicLanguage !== 'all') params.set('language', publicLanguage);
-      if (publicLocation) params.set('location', publicLocation);
+      if (publicLanguage) params.set('language', publicLanguage);
       if (selectedCareerRole && selectedCareerRole !== 'all') params.set('career_role', selectedCareerRole);
       if (selectedIndustryCategory && selectedIndustryCategory !== 'all') params.set('category', selectedIndustryCategory);
 
@@ -264,51 +262,8 @@ export default function VartaLangJobsBoard() {
         throw new Error("Backend response not ok");
       }
     } catch (error) {
-      console.warn("Using local public listings fallback:", error);
-      setPublicJobs([
-        {
-          title: `${publicLanguage} Content & Localization Specialist`,
-          company: "VartaLang Public Network",
-          location: publicLocation || "Delhi NCR, India",
-          salary_text: "₹6-12 LPA",
-          posted_days_ago: 1,
-          snippet: `Exciting opportunity for multilingual candidates fluent in ${publicLanguage}. Work on web & mobile app localization, regional copywriting, and quality assurance.`,
-          apply_link: "https://www.vartalang.in/jobs",
-          source_name: "Public Aggregation",
-          relevance_label: "Explicit match",
-          relevance_score: 9.0,
-          matched_terms: [publicLanguage, "localization", "content"],
-          trust_hints: ["Verified domain", "Direct hiring"]
-        },
-        {
-          title: `${publicLanguage} Voice-over & Audio Artist`,
-          company: "Regional Media Studios",
-          location: publicLocation || "Mumbai, India",
-          salary_text: "₹4-10 LPA",
-          posted_days_ago: 3,
-          snippet: `Voice artist needed for documentary narrations, regional ad campaigns, and audiobooks in ${publicLanguage}.`,
-          apply_link: "https://www.vartalang.in/jobs",
-          source_name: "Public Media Network",
-          relevance_label: "Explicit match",
-          relevance_score: 8.5,
-          matched_terms: [publicLanguage, "voice-over", "narration"],
-          trust_hints: ["Media production house"]
-        },
-        {
-          title: `Multilingual Customer Experience Specialist (${publicLanguage})`,
-          company: "E-Commerce Tech",
-          location: publicLocation || "Bengaluru, India",
-          salary_text: "₹3-6 LPA",
-          posted_days_ago: 2,
-          snippet: `Deliver customer assistance and support in ${publicLanguage} and English across digital and voice channels.`,
-          apply_link: "https://www.vartalang.in/jobs",
-          source_name: "Public Aggregation",
-          relevance_label: "Explicit match",
-          relevance_score: 8.0,
-          matched_terms: [publicLanguage, "multilingual support"],
-          trust_hints: ["Direct corporate hiring"]
-        }
-      ]);
+      console.warn("Error fetching public jobs:", error);
+      setPublicJobs([]);
     } finally {
       setPublicLoading(false);
     }
@@ -333,7 +288,7 @@ export default function VartaLangJobsBoard() {
         fetchPublicCareers();
       }
     }
-  }, [boardType, publicLanguage, publicLocation, selectedCareerRole, selectedIndustryCategory]);
+  }, [boardType, publicLanguage, selectedCareerRole, selectedIndustryCategory]);
 
   // ✅ INCREMENT VIEWS - called when job modal opens
   const incrementViews = async (jobId: string) => {
@@ -795,7 +750,7 @@ export default function VartaLangJobsBoard() {
               </div>
 
               {/* Public Filters */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <select
                   value={publicLanguage}
                   onChange={(e) => setPublicLanguage(e.target.value)}
@@ -805,6 +760,7 @@ export default function VartaLangJobsBoard() {
                       : 'bg-white border-orange-100 text-gray-900 focus:border-orange-400'
                   }`}
                 >
+                  <option value="all">🌐 All Languages</option>
                   <option value="Hindi">Hindi (हिन्दी)</option>
                   <option value="Tamil">Tamil (தமிழ்)</option>
                   <option value="Bengali">Bengali (বাংলা)</option>
@@ -816,18 +772,6 @@ export default function VartaLangJobsBoard() {
                   <option value="Punjabi">Punjabi (ਪੰਜਾਬੀ)</option>
                   <option value="English">English</option>
                 </select>
-
-                <input
-                  type="text"
-                  placeholder="Location (e.g. Delhi NCR, Chennai)..."
-                  value={publicLocation}
-                  onChange={(e) => setPublicLocation(e.target.value)}
-                  className={`px-4 py-3 rounded-xl border outline-none transition-all ${
-                    darkMode 
-                      ? 'bg-orange-900/10 border-orange-800/30 text-orange-50 placeholder-orange-300/50 focus:border-orange-600' 
-                      : 'bg-white border-orange-100 text-gray-900 placeholder-gray-400 focus:border-orange-400'
-                  }`}
-                />
 
                 <select
                   value={selectedIndustryCategory}

@@ -46,10 +46,10 @@ function RazorpayExtensionButton() {
 export default function VartaLangJobsHome() {
   const { darkMode } = useDarkMode();
   const [stats, setStats] = useState<JobStats>({
-    totalJobs: 0,
-    activeJobs: 0,
-    languages: 0,
-    companies: 0
+    totalJobs: 50,
+    activeJobs: 48,
+    languages: 12,
+    companies: 35
   });
 
   useEffect(() => {
