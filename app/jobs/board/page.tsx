@@ -47,6 +47,36 @@ interface Job {
   postedByName?: string;
 }
 
+interface PublicJobListing {
+  title: string;
+  company?: string;
+  location?: string;
+  salary_text?: string;
+  posted_days_ago?: number;
+  snippet?: string;
+  apply_link: string;
+  source_name?: string;
+  relevance_label: string;
+  relevance_score: number;
+  matched_terms?: string[];
+  trust_hints?: string[];
+}
+
+interface CareerPath {
+  id: string;
+  title: string;
+  hindi_title?: string;
+  category: string;
+  growth: string;
+  salary_lpa: string;
+  experience_level: string;
+  description: string;
+  key_skills: string[];
+  languages: string[];
+  hiring_companies: string[];
+  explore_link?: string;
+}
+
 interface JobFormData {
   title: string;
   language: string;
@@ -96,6 +126,17 @@ export default function VartaLangJobsBoard() {
   const [submitting, setSubmitting] = useState(false);
   const [formErrors, setFormErrors] = useState<FormErrors>({});
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+  /* ---------------- Two-Tier Jobs Board State ---------------- */
+  const [boardType, setBoardType] = useState<'verified' | 'public'>('verified');
+  const [publicJobs, setPublicJobs] = useState<PublicJobListing[]>([]);
+  const [publicCareers, setPublicCareers] = useState<CareerPath[]>([]);
+  const [publicLoading, setPublicLoading] = useState(false);
+  const [publicLanguage, setPublicLanguage] = useState('Hindi');
+  const [publicLocation, setPublicLocation] = useState('Delhi, India');
+  const [selectedCareerRole, setSelectedCareerRole] = useState('all');
+  const [selectedIndustryCategory, setSelectedIndustryCategory] = useState('all');
+  const [publicNotice, setPublicNotice] = useState('');
 
   // Filters
   const [searchQuery, setSearchQuery] = useState('');
@@ -204,6 +245,49 @@ export default function VartaLangJobsBoard() {
       setLoading(false);
     }
   };
+
+  const fetchPublicJobs = async () => {
+    setPublicLoading(true);
+    try {
+      const params = new URLSearchParams();
+      if (publicLanguage && publicLanguage !== 'all') params.set('language', publicLanguage);
+      if (publicLocation) params.set('location', publicLocation);
+      if (selectedCareerRole && selectedCareerRole !== 'all') params.set('career_role', selectedCareerRole);
+      if (selectedIndustryCategory && selectedIndustryCategory !== 'all') params.set('category', selectedIndustryCategory);
+
+      const res = await fetch(`${API_URL}/jobs/public/listings?${params.toString()}`);
+      if (res.ok) {
+        const data = await res.json();
+        setPublicJobs(data.listings || []);
+        if (data.notice) setPublicNotice(data.notice);
+      }
+    } catch (error) {
+      console.error("Error fetching public jobs:", error);
+    } finally {
+      setPublicLoading(false);
+    }
+  };
+
+  const fetchPublicCareers = async () => {
+    try {
+      const res = await fetch(`${API_URL}/jobs/public/careers`);
+      if (res.ok) {
+        const data = await res.json();
+        setPublicCareers(data.careers || []);
+      }
+    } catch (error) {
+      console.error("Error fetching public careers:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (boardType === 'public') {
+      fetchPublicJobs();
+      if (publicCareers.length === 0) {
+        fetchPublicCareers();
+      }
+    }
+  }, [boardType, publicLanguage, publicLocation, selectedCareerRole, selectedIndustryCategory]);
 
   // ✅ INCREMENT VIEWS - called when job modal opens
   const incrementViews = async (jobId: string) => {
@@ -470,266 +554,496 @@ export default function VartaLangJobsBoard() {
             </button>
           </div>
 
-          {/* Notice Banner */}
-          <div className={`p-4 rounded-xl border mb-6 ${
-            darkMode 
-              ? 'bg-blue-900/10 border-blue-800/30' 
-              : 'bg-blue-50 border-blue-200'
-          }`}>
-            <div className="flex items-start gap-3">
-              <Info className={`w-5 h-5 mt-0.5 shrink-0 ${
-                darkMode ? 'text-blue-400' : 'text-blue-600'
-              }`} />
-              <div className={`text-sm ${darkMode ? 'text-blue-200' : 'text-blue-900'}`}>
-                <strong>How to apply:</strong> Contact employers directly using the email provided in each listing. 
-                VartaLang does not accept applications or intermediate hiring.
-              </div>
-            </div>
-          </div>
-
-          {/* Search and Filters */}
-          <div className="space-y-4">
-            <div className={`flex items-center gap-3 px-4 py-3 rounded-xl border ${
-              darkMode 
-                ? 'bg-orange-900/10 border-orange-800/30' 
-                : 'bg-white border-orange-100'
+          {/* Two-Tier Tab Switcher */}
+          <div className="flex justify-center mb-8">
+            <div className={`inline-flex rounded-2xl p-1.5 border shadow-sm ${
+              darkMode ? 'bg-orange-950/40 border-orange-800/40' : 'bg-orange-50/80 border-orange-200/60'
             }`}>
-              <Search className={`w-5 h-5 ${darkMode ? 'text-orange-400' : 'text-gray-400'}`} />
-              <input
-                type="text"
-                placeholder="Search jobs by title, company, or description..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className={`flex-1 bg-transparent outline-none ${
-                  darkMode ? 'text-orange-50 placeholder-orange-300/50' : 'text-gray-900 placeholder-gray-400'
-                }`}
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className={`p-1 rounded-lg hover:bg-orange-900/20 transition-all ${
-                    darkMode ? 'text-orange-400' : 'text-gray-500'
-                  }`}
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              )}
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-              <select
-                value={selectedLanguage}
-                onChange={(e) => setSelectedLanguage(e.target.value)}
-                className={`px-4 py-3 rounded-xl border outline-none transition-all ${
-                  darkMode 
-                    ? 'bg-orange-900/20 border-orange-800/30 text-orange-100 focus:border-orange-600' 
-                    : 'bg-white border-orange-100 text-gray-900 focus:border-orange-400'
-                }`}
-              >
-                <option value="all">All Languages</option>
-                {languages.map(lang => (
-                  <option key={lang} value={lang}>{lang}</option>
-                ))}
-              </select>
-
-              <select
-                value={selectedJobType}
-                onChange={(e) => setSelectedJobType(e.target.value)}
-                className={`px-4 py-3 rounded-xl border outline-none transition-all ${
-                  darkMode 
-                    ? 'bg-orange-900/20 border-orange-800/30 text-orange-100 focus:border-orange-600' 
-                    : 'bg-white border-orange-100 text-gray-900 focus:border-orange-400'
-                }`}
-              >
-                <option value="all">All Job Types</option>
-                {jobTypes.map(type => (
-                  <option key={type.value} value={type.value}>{type.label}</option>
-                ))}
-              </select>
-
-              <input
-                type="text"
-                placeholder="Filter by location..."
-                value={selectedLocation === 'all' ? '' : selectedLocation}
-                onChange={(e) => setSelectedLocation(e.target.value || 'all')}
-                className={`px-4 py-3 rounded-xl border outline-none transition-all ${
-                  darkMode 
-                    ? 'bg-orange-900/10 border-orange-800/30 text-orange-50 placeholder-orange-300/50 focus:border-orange-600' 
-                    : 'bg-white border-orange-100 text-gray-900 placeholder-gray-400 focus:border-orange-400'
-                }`}
-              />
-
               <button
-                onClick={() => setShowRemoteOnly(!showRemoteOnly)}
-                className={`px-4 py-3 rounded-xl border font-medium transition-all ${
-                  showRemoteOnly
-                    ? 'bg-linear-to-r from-orange-500 to-red-600 text-white border-transparent'
-                    : darkMode
-                      ? 'bg-orange-900/10 border-orange-800/30 text-orange-200 hover:bg-orange-900/20'
-                      : 'bg-white border-orange-100 text-gray-700 hover:bg-orange-50'
+                onClick={() => setBoardType('verified')}
+                className={`flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all ${
+                  boardType === 'verified'
+                    ? 'bg-linear-to-r from-orange-500 to-red-600 text-white shadow-md'
+                    : darkMode ? 'text-orange-200/70 hover:text-orange-100' : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
-                <Globe className="w-4 h-4 inline mr-2" />
-                Remote Only
+                <Shield className="w-4 h-4" />
+                VartaLang Verified Jobs
+              </button>
+              <button
+                onClick={() => setBoardType('public')}
+                className={`flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all ${
+                  boardType === 'public'
+                    ? 'bg-linear-to-r from-orange-500 to-red-600 text-white shadow-md'
+                    : darkMode ? 'text-orange-200/70 hover:text-orange-100' : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <Globe className="w-4 h-4" />
+                Public Jobs Board (28+ Careers)
               </button>
             </div>
+          </div>
 
-            {(selectedLanguage !== 'all' || selectedJobType !== 'all' || selectedLocation !== 'all' || showRemoteOnly) && (
-              <div className="flex flex-wrap gap-2">
-                {selectedLanguage !== 'all' && (
-                  <span className={`px-3 py-1 rounded-full text-sm flex items-center gap-2 ${
-                    darkMode ? 'bg-orange-900/20 text-orange-300' : 'bg-orange-50 text-orange-700'
-                  }`}>
-                    {selectedLanguage}
-                    <button onClick={() => setSelectedLanguage('all')}>
-                      <X className="w-3 h-3" />
+          {boardType === 'verified' ? (
+            <>
+              {/* Notice Banner */}
+              <div className={`p-4 rounded-xl border mb-6 ${
+                darkMode 
+                  ? 'bg-blue-900/10 border-blue-800/30' 
+                  : 'bg-blue-50 border-blue-200'
+              }`}>
+                <div className="flex items-start gap-3">
+                  <Info className={`w-5 h-5 mt-0.5 shrink-0 ${
+                    darkMode ? 'text-blue-400' : 'text-blue-600'
+                  }`} />
+                  <div className={`text-sm ${darkMode ? 'text-blue-200' : 'text-blue-900'}`}>
+                    <strong>How to apply:</strong> Contact employers directly using the email provided in each listing. 
+                    VartaLang does not accept applications or intermediate hiring.
+                  </div>
+                </div>
+              </div>
+
+              {/* Search and Filters */}
+              <div className="space-y-4">
+                <div className={`flex items-center gap-3 px-4 py-3 rounded-xl border ${
+                  darkMode 
+                    ? 'bg-orange-900/10 border-orange-800/30' 
+                    : 'bg-white border-orange-100'
+                }`}>
+                  <Search className={`w-5 h-5 ${darkMode ? 'text-orange-400' : 'text-gray-400'}`} />
+                  <input
+                    type="text"
+                    placeholder="Search jobs by title, company, or description..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className={`flex-1 bg-transparent outline-none ${
+                      darkMode ? 'text-orange-50 placeholder-orange-300/50' : 'text-gray-900 placeholder-gray-400'
+                    }`}
+                  />
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery('')}
+                      className={`p-1 rounded-lg hover:bg-orange-900/20 transition-all ${
+                        darkMode ? 'text-orange-400' : 'text-gray-500'
+                      }`}
+                    >
+                      <X className="w-4 h-4" />
                     </button>
-                  </span>
-                )}
-                {selectedJobType !== 'all' && (
-                  <span className={`px-3 py-1 rounded-full text-sm flex items-center gap-2 ${
-                    darkMode ? 'bg-orange-900/20 text-orange-300' : 'bg-orange-50 text-orange-700'
-                  }`}>
-                    {getJobTypeLabel(selectedJobType)}
-                    <button onClick={() => setSelectedJobType('all')}>
-                      <X className="w-3 h-3" />
-                    </button>
-                  </span>
-                )}
-                {selectedLocation !== 'all' && (
-                  <span className={`px-3 py-1 rounded-full text-sm flex items-center gap-2 ${
-                    darkMode ? 'bg-orange-900/20 text-orange-300' : 'bg-orange-50 text-orange-700'
-                  }`}>
-                    {selectedLocation}
-                    <button onClick={() => setSelectedLocation('all')}>
-                      <X className="w-3 h-3" />
-                    </button>
-                  </span>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                  <select
+                    value={selectedLanguage}
+                    onChange={(e) => setSelectedLanguage(e.target.value)}
+                    className={`px-4 py-3 rounded-xl border outline-none transition-all ${
+                      darkMode 
+                        ? 'bg-orange-900/20 border-orange-800/30 text-orange-100 focus:border-orange-600' 
+                        : 'bg-white border-orange-100 text-gray-900 focus:border-orange-400'
+                    }`}
+                  >
+                    <option value="all">All Languages</option>
+                    {languages.map(lang => (
+                      <option key={lang} value={lang}>{lang}</option>
+                    ))}
+                  </select>
+
+                  <select
+                    value={selectedJobType}
+                    onChange={(e) => setSelectedJobType(e.target.value)}
+                    className={`px-4 py-3 rounded-xl border outline-none transition-all ${
+                      darkMode 
+                        ? 'bg-orange-900/20 border-orange-800/30 text-orange-100 focus:border-orange-600' 
+                        : 'bg-white border-orange-100 text-gray-900 focus:border-orange-400'
+                    }`}
+                  >
+                    <option value="all">All Job Types</option>
+                    {jobTypes.map(type => (
+                      <option key={type.value} value={type.value}>{type.label}</option>
+                    ))}
+                  </select>
+
+                  <input
+                    type="text"
+                    placeholder="Filter by location..."
+                    value={selectedLocation === 'all' ? '' : selectedLocation}
+                    onChange={(e) => setSelectedLocation(e.target.value || 'all')}
+                    className={`px-4 py-3 rounded-xl border outline-none transition-all ${
+                      darkMode 
+                        ? 'bg-orange-900/10 border-orange-800/30 text-orange-50 placeholder-orange-300/50 focus:border-orange-600' 
+                        : 'bg-white border-orange-100 text-gray-900 placeholder-gray-400 focus:border-orange-400'
+                    }`}
+                  />
+
+                  <button
+                    onClick={() => setShowRemoteOnly(!showRemoteOnly)}
+                    className={`px-4 py-3 rounded-xl border font-medium transition-all ${
+                      showRemoteOnly
+                        ? 'bg-linear-to-r from-orange-500 to-red-600 text-white border-transparent'
+                        : darkMode
+                          ? 'bg-orange-900/10 border-orange-800/30 text-orange-200 hover:bg-orange-900/20'
+                          : 'bg-white border-orange-100 text-gray-700 hover:bg-orange-50'
+                    }`}
+                  >
+                    <Globe className="w-4 h-4 inline mr-2" />
+                    Remote Only
+                  </button>
+                </div>
+
+                {(selectedLanguage !== 'all' || selectedJobType !== 'all' || selectedLocation !== 'all' || showRemoteOnly) && (
+                  <div className="flex flex-wrap gap-2">
+                    {selectedLanguage !== 'all' && (
+                      <span className={`px-3 py-1 rounded-full text-sm flex items-center gap-2 ${
+                        darkMode ? 'bg-orange-900/20 text-orange-300' : 'bg-orange-50 text-orange-700'
+                      }`}>
+                        {selectedLanguage}
+                        <button onClick={() => setSelectedLanguage('all')}>
+                          <X className="w-3 h-3" />
+                        </button>
+                      </span>
+                    )}
+                    {selectedJobType !== 'all' && (
+                      <span className={`px-3 py-1 rounded-full text-sm flex items-center gap-2 ${
+                        darkMode ? 'bg-orange-900/20 text-orange-300' : 'bg-orange-50 text-orange-700'
+                      }`}>
+                        {getJobTypeLabel(selectedJobType)}
+                        <button onClick={() => setSelectedJobType('all')}>
+                          <X className="w-3 h-3" />
+                        </button>
+                      </span>
+                    )}
+                    {selectedLocation !== 'all' && (
+                      <span className={`px-3 py-1 rounded-full text-sm flex items-center gap-2 ${
+                        darkMode ? 'bg-orange-900/20 text-orange-300' : 'bg-orange-50 text-orange-700'
+                      }`}>
+                        {selectedLocation}
+                        <button onClick={() => setSelectedLocation('all')}>
+                          <X className="w-3 h-3" />
+                        </button>
+                      </span>
+                    )}
+                  </div>
                 )}
               </div>
-            )}
-          </div>
+            </>
+          ) : (
+            <>
+              {/* Public Notice Banner */}
+              <div className={`p-4 rounded-xl border mb-6 ${
+                darkMode 
+                  ? 'bg-orange-900/10 border-orange-800/30' 
+                  : 'bg-orange-50 border-orange-200'
+              }`}>
+                <div className="flex items-start gap-3">
+                  <Globe className={`w-5 h-5 mt-0.5 shrink-0 ${
+                    darkMode ? 'text-orange-400' : 'text-orange-600'
+                  }`} />
+                  <div className={`text-sm ${darkMode ? 'text-orange-200' : 'text-orange-900'}`}>
+                    <strong>Public Language Opportunities:</strong> Scraped and scored across 28 language career paths in media, tech, accessibility, and education. Apply directly at the employer&apos;s source link.
+                  </div>
+                </div>
+              </div>
+
+              {/* Public Filters */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                <select
+                  value={publicLanguage}
+                  onChange={(e) => setPublicLanguage(e.target.value)}
+                  className={`px-4 py-3 rounded-xl border outline-none transition-all ${
+                    darkMode 
+                      ? 'bg-orange-900/20 border-orange-800/30 text-orange-100 focus:border-orange-600' 
+                      : 'bg-white border-orange-100 text-gray-900 focus:border-orange-400'
+                  }`}
+                >
+                  <option value="Hindi">Hindi (हिन्दी)</option>
+                  <option value="Tamil">Tamil (தமிழ்)</option>
+                  <option value="Bengali">Bengali (বাংলা)</option>
+                  <option value="Telugu">Telugu (తెలుగు)</option>
+                  <option value="Marathi">Marathi (मराठी)</option>
+                  <option value="Gujarati">Gujarati (ગુજરાતી)</option>
+                  <option value="Kannada">Kannada (ಕನ್ನಡ)</option>
+                  <option value="Malayalam">Malayalam (മലയാളം)</option>
+                  <option value="Punjabi">Punjabi (ਪੰਜਾਬੀ)</option>
+                  <option value="English">English</option>
+                </select>
+
+                <input
+                  type="text"
+                  placeholder="Location (e.g. Delhi NCR, Chennai)..."
+                  value={publicLocation}
+                  onChange={(e) => setPublicLocation(e.target.value)}
+                  className={`px-4 py-3 rounded-xl border outline-none transition-all ${
+                    darkMode 
+                      ? 'bg-orange-900/10 border-orange-800/30 text-orange-50 placeholder-orange-300/50 focus:border-orange-600' 
+                      : 'bg-white border-orange-100 text-gray-900 placeholder-gray-400 focus:border-orange-400'
+                  }`}
+                />
+
+                <select
+                  value={selectedIndustryCategory}
+                  onChange={(e) => setSelectedIndustryCategory(e.target.value)}
+                  className={`px-4 py-3 rounded-xl border outline-none transition-all ${
+                    darkMode 
+                      ? 'bg-orange-900/20 border-orange-800/30 text-orange-100 focus:border-orange-600' 
+                      : 'bg-white border-orange-100 text-gray-900 focus:border-orange-400'
+                  }`}
+                >
+                  <option value="all">All Industries (8 Sectors)</option>
+                  <option value="Media & Broadcasting">Media & Broadcasting</option>
+                  <option value="Publishing & Editorial">Publishing & Editorial</option>
+                  <option value="International & Diplomatic">International & Diplomatic</option>
+                  <option value="Corporate & Tech">Corporate & Tech</option>
+                  <option value="Entertainment">Entertainment</option>
+                  <option value="Accessibility & Inclusion">Accessibility & Inclusion</option>
+                  <option value="Education & Training">Education & Training</option>
+                  <option value="Government & Public">Government & Public</option>
+                </select>
+
+                <select
+                  value={selectedCareerRole}
+                  onChange={(e) => setSelectedCareerRole(e.target.value)}
+                  className={`px-4 py-3 rounded-xl border outline-none transition-all ${
+                    darkMode 
+                      ? 'bg-orange-900/20 border-orange-800/30 text-orange-100 focus:border-orange-600' 
+                      : 'bg-white border-orange-100 text-gray-900 focus:border-orange-400'
+                  }`}
+                >
+                  <option value="all">All Career Roles (28 Paths)</option>
+                  {publicCareers.map(c => (
+                    <option key={c.id} value={c.id}>
+                      {c.title} {c.hindi_title ? `(${c.hindi_title})` : ''}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </>
+          )}
         </div>
       </section>
 
       {/* Jobs List */}
       <section className="py-8 px-4 pb-20">
         <div className="max-w-7xl mx-auto">
-          {filteredJobs.length === 0 ? (
-            <div className={`p-12 rounded-2xl border text-center ${
-              darkMode 
-                ? 'bg-orange-900/10 border-orange-800/30' 
-                : 'bg-white border-orange-100 shadow-lg'
-            }`}>
-              <Briefcase className={`w-16 h-16 mx-auto mb-4 ${darkMode ? 'text-orange-400/50' : 'text-orange-600/50'}`} />
-              <h3 className={`text-lg font-bold mb-2 ${darkMode ? 'text-orange-50' : 'text-gray-900'}`}>
-                No Jobs Found
-              </h3>
-              <p className={`text-sm mb-4 ${darkMode ? 'text-orange-200/70' : 'text-gray-600'}`}>
-                Try adjusting your filters or check back later for new opportunities
-              </p>
-              <button 
-                onClick={() => {
-                  setSearchQuery('');
-                  setSelectedLanguage('all');
-                  setSelectedJobType('all');
-                  setSelectedLocation('all');
-                  setShowRemoteOnly(false);
-                }}
-                className="px-6 py-3 rounded-xl bg-linear-to-r from-orange-500 to-red-600 text-white font-semibold hover:shadow-lg transition-all"
-              >
-                Clear All Filters
-              </button>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredJobs.map((job) => (
-                <div
-                  key={job._id}
-                  className={`group relative rounded-2xl border transition-all hover:scale-[1.02] cursor-pointer overflow-hidden ${
-                    darkMode 
-                      ? 'bg-linear-to-br from-orange-950/40 to-orange-900/20 border-orange-800/30 hover:border-orange-700/50' 
-                      : 'bg-white border-orange-100 hover:shadow-2xl'
-                  }`}
+          {boardType === 'verified' ? (
+            filteredJobs.length === 0 ? (
+              <div className={`p-12 rounded-2xl border text-center ${
+                darkMode 
+                  ? 'bg-orange-900/10 border-orange-800/30' 
+                  : 'bg-white border-orange-100 shadow-lg'
+              }`}>
+                <Briefcase className={`w-16 h-16 mx-auto mb-4 ${darkMode ? 'text-orange-400/50' : 'text-orange-600/50'}`} />
+                <h3 className={`text-lg font-bold mb-2 ${darkMode ? 'text-orange-50' : 'text-gray-900'}`}>
+                  No Jobs Found
+                </h3>
+                <p className={`text-sm mb-4 ${darkMode ? 'text-orange-200/70' : 'text-gray-600'}`}>
+                  Try adjusting your filters or check back later for new opportunities
+                </p>
+                <button 
                   onClick={() => {
-                    setSelectedJob(job);
-                    incrementViews(job._id); // ✅ card click pe view count
+                    setSearchQuery('');
+                    setSelectedLanguage('all');
+                    setSelectedJobType('all');
+                    setSelectedLocation('all');
+                    setShowRemoteOnly(false);
                   }}
+                  className="px-6 py-3 rounded-xl bg-linear-to-r from-orange-500 to-red-600 text-white font-semibold hover:shadow-lg transition-all"
                 >
-                  {/* Live Jobs Badge */}
-                  <div className="absolute top-4 left-4 z-10">
-                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-linear-to-r from-orange-500 to-red-600 text-white shadow-lg">
-                      Live Jobs
-                    </span>
-                  </div>
-
-                  <div className="p-6 pt-14">
-                    {/* Company Icon & Title */}
-                    <div className="flex items-start gap-3 mb-4">
-                      <div className={`p-3 rounded-xl shrink-0 ${
-                        darkMode ? 'bg-orange-500/20' : 'bg-orange-50'
-                      }`}>
-                        <Briefcase className={`w-6 h-6 ${darkMode ? 'text-orange-400' : 'text-orange-600'}`} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className={`text-lg font-bold mb-1 line-clamp-2 ${
-                          darkMode ? 'text-orange-50' : 'text-gray-900'
-                        }`}>
-                          {job.title}
-                        </h3>
-                        <p className={`text-sm ${darkMode ? 'text-orange-200/70' : 'text-gray-600'}`}>
-                          {job.companyName}
-                        </p>
-                      </div>
+                  Clear All Filters
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredJobs.map((job) => (
+                  <div
+                    key={job._id}
+                    className={`group relative rounded-2xl border transition-all hover:scale-[1.02] cursor-pointer overflow-hidden ${
+                      darkMode 
+                        ? 'bg-linear-to-br from-orange-950/40 to-orange-900/20 border-orange-800/30 hover:border-orange-700/50' 
+                        : 'bg-white border-orange-100 hover:shadow-2xl'
+                    }`}
+                    onClick={() => {
+                      setSelectedJob(job);
+                      incrementViews(job._id); // ✅ card click pe view count
+                    }}
+                  >
+                    {/* Live Jobs Badge */}
+                    <div className="absolute top-4 left-4 z-10">
+                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-linear-to-r from-orange-500 to-red-600 text-white shadow-lg">
+                        Live Jobs
+                      </span>
                     </div>
 
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        darkMode ? 'bg-orange-500/20 text-orange-300' : 'bg-orange-50 text-orange-700'
-                      }`}>
-                        <Languages className="w-3 h-3 inline mr-1" />
-                        {job.language}
-                      </span>
-                      <span className={`px-3 py-1 rounded-full text-xs ${
-                        darkMode ? 'bg-orange-900/30 text-orange-300' : 'bg-orange-50 text-orange-700'
-                      }`}>
-                        <MapPin className="w-3 h-3 inline mr-1" />
-                        {job.location}
-                      </span>
-                      {job.employmentType && (
+                    <div className="p-6 pt-14">
+                      {/* Company Icon & Title */}
+                      <div className="flex items-start gap-3 mb-4">
+                        <div className={`p-3 rounded-xl shrink-0 ${
+                          darkMode ? 'bg-orange-500/20' : 'bg-orange-50'
+                        }`}>
+                          <Briefcase className={`w-6 h-6 ${darkMode ? 'text-orange-400' : 'text-orange-600'}`} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className={`text-lg font-bold mb-1 line-clamp-2 ${
+                            darkMode ? 'text-orange-50' : 'text-gray-900'
+                          }`}>
+                            {job.title}
+                          </h3>
+                          <p className={`text-sm ${darkMode ? 'text-orange-200/70' : 'text-gray-600'}`}>
+                            {job.companyName}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Tags */}
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          darkMode ? 'bg-orange-500/20 text-orange-300' : 'bg-orange-50 text-orange-700'
+                        }`}>
+                          <Languages className="w-3 h-3 inline mr-1" />
+                          {job.language}
+                        </span>
                         <span className={`px-3 py-1 rounded-full text-xs ${
                           darkMode ? 'bg-orange-900/30 text-orange-300' : 'bg-orange-50 text-orange-700'
                         }`}>
-                          {getEmploymentTypeLabel(job.employmentType)}
+                          <MapPin className="w-3 h-3 inline mr-1" />
+                          {job.location}
                         </span>
+                        {job.employmentType && (
+                          <span className={`px-3 py-1 rounded-full text-xs ${
+                            darkMode ? 'bg-orange-900/30 text-orange-300' : 'bg-orange-50 text-orange-700'
+                          }`}>
+                            {getEmploymentTypeLabel(job.employmentType)}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Salary */}
+                      {formatSalary(job) && (
+                        <div className={`mb-4 ${darkMode ? 'text-orange-50' : 'text-gray-900'}`}>
+                          <div className="text-2xl font-bold flex items-center gap-1">
+                            {formatSalary(job)}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* View Button */}
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedJob(job);
+                          incrementViews(job._id); // ✅ button click pe view count
+                        }}
+                        className="w-full py-3 rounded-xl bg-linear-to-r from-orange-500 to-red-600 text-white text-sm font-bold hover:shadow-lg transition-all"
+                      >
+                        View Details & Apply
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )
+          ) : (
+            publicLoading ? (
+              <div className="text-center py-20">
+                <Loader2 className={`w-12 h-12 animate-spin mx-auto mb-3 ${darkMode ? 'text-orange-400' : 'text-orange-600'}`} />
+                <p className={`text-base font-medium ${darkMode ? 'text-orange-200' : 'text-gray-700'}`}>
+                  Scraping & aggregating public language opportunities...
+                </p>
+              </div>
+            ) : publicJobs.length === 0 ? (
+              <div className={`p-12 rounded-2xl border text-center ${
+                darkMode ? 'bg-orange-900/10 border-orange-800/30' : 'bg-white border-orange-100 shadow-lg'
+              }`}>
+                <Globe className={`w-16 h-16 mx-auto mb-4 ${darkMode ? 'text-orange-400/50' : 'text-orange-600/50'}`} />
+                <h3 className={`text-lg font-bold mb-2 ${darkMode ? 'text-orange-50' : 'text-gray-900'}`}>
+                  No Public Jobs Found
+                </h3>
+                <p className={`text-sm mb-4 ${darkMode ? 'text-orange-200/70' : 'text-gray-600'}`}>
+                  Try selecting a different language or location.
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {publicJobs.map((pJob, idx) => (
+                  <div
+                    key={idx}
+                    className={`group relative rounded-2xl border p-6 flex flex-col justify-between transition-all hover:scale-[1.02] overflow-hidden ${
+                      darkMode 
+                        ? 'bg-linear-to-br from-orange-950/40 to-orange-900/20 border-orange-800/30 hover:border-orange-700/50' 
+                        : 'bg-white border-orange-100 hover:shadow-2xl'
+                    }`}
+                  >
+                    <div>
+                      {/* Relevance & Source Badges */}
+                      <div className="flex items-center justify-between gap-2 mb-3">
+                        <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
+                          pJob.relevance_label === 'Explicit match'
+                            ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                            : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                        }`}>
+                          {pJob.relevance_label}
+                        </span>
+                        <span className={`text-xs ${darkMode ? 'text-orange-200/60' : 'text-gray-500'}`}>
+                          {pJob.source_name || 'Public Web'}
+                        </span>
+                      </div>
+
+                      <h3 className={`text-lg font-bold mb-1 line-clamp-2 ${darkMode ? 'text-orange-50' : 'text-gray-900'}`}>
+                        {pJob.title}
+                      </h3>
+                      <p className={`text-sm mb-3 font-medium ${darkMode ? 'text-orange-200/80' : 'text-gray-600'}`}>
+                        {pJob.company || 'Direct Hiring'} · {pJob.location || 'India'}
+                      </p>
+
+                      {/* Salary */}
+                      {pJob.salary_text && (
+                        <div className="mb-3 text-lg font-bold text-orange-500">
+                          {pJob.salary_text}
+                        </div>
+                      )}
+
+                      {/* Evidence Chips */}
+                      {pJob.matched_terms && pJob.matched_terms.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 mb-3">
+                          {pJob.matched_terms.map((term, tIdx) => (
+                            <span
+                              key={tIdx}
+                              className={`px-2 py-0.5 rounded-md text-xs font-medium ${
+                                darkMode ? 'bg-orange-500/20 text-orange-300' : 'bg-orange-50 text-orange-700 border border-orange-100'
+                              }`}
+                            >
+                              ✓ {term}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Snippet */}
+                      {pJob.snippet && (
+                        <p className={`text-xs line-clamp-3 mb-4 ${darkMode ? 'text-orange-200/60' : 'text-gray-600'}`}>
+                          {pJob.snippet}
+                        </p>
                       )}
                     </div>
 
-                    {/* Salary */}
-                    {formatSalary(job) && (
-                      <div className={`mb-4 ${darkMode ? 'text-orange-50' : 'text-gray-900'}`}>
-                        <div className="text-2xl font-bold flex items-center gap-1">
-                          {formatSalary(job)}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* View Button */}
-                    <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedJob(job);
-                        incrementViews(job._id); // ✅ button click pe view count
-                      }}
-                      className="w-full py-3 rounded-xl bg-linear-to-r from-orange-500 to-red-600 text-white text-sm font-bold hover:shadow-lg transition-all"
-                    >
-                      View Details & Apply
-                    </button>
+                    {/* Apply Button */}
+                    <div className="mt-4 pt-3 border-t border-orange-500/10 flex items-center justify-between">
+                      <span className={`text-xs ${darkMode ? 'text-orange-200/50' : 'text-gray-400'}`}>
+                        {pJob.posted_days_ago !== undefined ? `Posted ${pJob.posted_days_ago}d ago` : 'Recently posted'}
+                      </span>
+                      <a
+                        href={pJob.apply_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-linear-to-r from-orange-500 to-red-600 text-white text-xs font-bold hover:shadow-lg transition-all"
+                      >
+                        Apply at Source
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )
           )}
         </div>
       </section>
