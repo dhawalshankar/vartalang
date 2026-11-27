@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Yatra_One } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
+import BackendHealthCheck from "@/components/BackendHealthCheck";
 import { DarkModeProvider } from "@/lib/DarkModeContext";
 import { AuthProvider } from "@/lib/AuthContext";
 import Analytics from "@/components/Analytics";
@@ -85,6 +86,7 @@ export default function RootLayout({
           <AuthProvider>
             <DarkModeProvider>
               <Analytics />
+              <BackendHealthCheck />
               {children}
             </DarkModeProvider>
           </AuthProvider>
